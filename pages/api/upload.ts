@@ -1,11 +1,14 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { airtablePut } from "../../airtableApi";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest & { query: { file: string } },
   res: NextApiResponse
 ) {
+  airtablePut({ file: req.query.file });
+
   const s3Client = new S3Client({
     region: process.env.REGION,
     credentials: {

@@ -15,5 +15,7 @@ declare namespace NodeJS {
     REGION: string;
     ACCESS_KEY: string;
     SECRET_KEY: string;
+    AIRTABLE_API_KEY: string;
+    AIRTABLE_BASE: string;
   }
 }

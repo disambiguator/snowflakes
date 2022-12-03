@@ -6,6 +6,7 @@ import vertexShader from "./index.vert";
 import fragmentShader from "./index.frag";
 import styles from "./index.module.scss";
 import upload from "./upload";
+import Link from "next/link";
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
@@ -236,7 +237,9 @@ export default function ShaderPage() {
           <div className={styles.button} onClick={saveSnowflake}>
             💾 save snowflake
           </div>
-          <div className={styles.viewGalleryLink}>view gallery ➡️</div>
+          <Link href={`/gallery`}>
+            <a className={styles.viewGalleryLink}>view gallery ➡️</a>
+          </Link>
         </div>
       </div>
 

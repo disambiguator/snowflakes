@@ -10,7 +10,6 @@ function dataURItoBlob(dataURI: string) {
 }
 
 const uploadPhoto = async (uri: string) => {
-  console.log(uri);
   const file = dataURItoBlob(uri);
   const filename = uuid() + ".png";
   const res = await fetch(`/api/upload?file=${filename}`);
