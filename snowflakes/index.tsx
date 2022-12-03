@@ -5,6 +5,7 @@ import { Vector2 } from "three";
 import vertexShader from "./index.vert";
 import fragmentShader from "./index.frag";
 import styles from "./index.module.scss";
+import upload from "./upload";
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
@@ -83,8 +84,9 @@ const randomize = () => {
 randomize();
 
 const saveSnowflake = () => {
+  const href = document.getElementsByTagName("canvas")[0].toDataURL();
+  upload(href);
   // should this download it?
-  // const href = document.getElementsByTagName('canvas')[0].toDataURL();
   // const link = document.createElement('a');
   // link.href = href;
   // link.download = 'disambiguous_export.png';
