@@ -1,0 +1,84 @@
+.marquee {
+  position: absolute;
+  width: 100%;
+  height: 49px;
+  bottom: 0;
+  left: 0;
+  background: #40176a;
+}
+.marqueeText {
+  padding-left: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 49px;
+  color: white;
+}
+
+.introBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.introMessage {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  padding: 32px;
+  width: 544px;
+  background: #bdd9e9;
+  border: 2px solid #40176a;
+  border-radius: 24px;
+  color: #40176a;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.button {
+  font-weight: 700;
+  padding: 8px 12px;
+  width: fit-content;
+  border: 2px solid #8134cd;
+  border-radius: 24px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.buttonFrame {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.topRightButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  > div {
+    margin-bottom: 8px;
+  }
+}
+
+.viewGalleryLink {
+  margin-top: 24px;
+  border-bottom: 2px solid #6427a0;
+}
+
+.canvasWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 90vh;
+  width: 90vh;
+}
