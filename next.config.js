@@ -7,4 +7,13 @@ module.exports = {
     });
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "snowflakes-disambiguous.s3.amazonaws.com",
+        pathname: "/**.png",
+      },
+    ],
+  },
 };
