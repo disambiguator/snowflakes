@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "pnpm lint && tsc"
   },
   "dependencies": {
     "@tsconfig/next": "^1.0.4",
