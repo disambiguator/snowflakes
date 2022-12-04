@@ -186,26 +186,6 @@ export default function ShaderPage() {
   const [inIntro, setInIntro] = useState(true);
   return (
     <React.StrictMode>
-      <style global jsx>{`
-        body {
-          margin: 0;
-          padding: 24px;
-          height: 100%;
-
-          background: #bdd9e9;
-
-          font-family: "Space Mono";
-          font-style: normal;
-          font-weight: normal;
-          font-size: 20px;
-          overscroll-behavior: none;
-
-          color: #6427a0;
-        }
-        canvas {
-          display: block;
-        }
-      `}</style>
       <footer className={styles.marquee}>
         <div className={styles.marqueeText}>
           ❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy holidays
