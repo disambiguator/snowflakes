@@ -1,0 +1,22 @@
+.galleryItem {
+  border: 2px solid #40176a;
+  border-radius: 24px;
+  width: 360px;
+  height: 360px;
+  margin: 16px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image {
+  margin-left: 58px;
+  margin-top: 58px;
+}
+
+// .author {
+//   overflow: ellipsis;
+//   max-width: 244px;
+// }
