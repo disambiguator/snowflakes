@@ -1,7 +1,6 @@
 #define N (9)
 
-uniform float k, hover, time, totalTime;
-uniform vec2 p1, p2, p3, p4, p5, p6, p7, p8;
+in vec2 p1, p2, p3, p4, p5, p6, p7, p8;
 in vec2 vUv;
 
 const float PI = 3.14159265359;
@@ -14,9 +13,6 @@ float sdPoly(vec2[N] v, vec2 p) {
   float s = 1.0;
   for (int i = 0, j = N - 1; i < N; j = i, i++) {
     vec2 e = v[j] - v[i];
-    // vec2 e = v[j] - v[i] + 0.08 * sin(p.y * 150.0 + totalTime * 3.0);
-    // e += 0.01 * sin(p.y * 150.0);
-    // e += 0.03 * sin(p.x * 150.0);
     vec2 w = p - v[i];
     vec2 b = w - e * clamp(dot(w, e) / dot(e, e), 0.0, 1.0);
     d = min(d, dot(b, b));
@@ -57,6 +53,8 @@ const vec4 outlineColor = vec4(
 );
 
 vec4 sdfSnowflake(vec2 p) {
+
+
   vec2[N] poly = vec2[N](center, p1, p2, p3, p4, p5, p6, p7, p8);
   float d = sdPoly(poly, p);
 
@@ -88,39 +86,8 @@ vec4 sdfSnowflake(vec2 p) {
 void main() {
   // Move from 0 to 1 domain to -1 to 1 domain
   vec2 p = vUv * 2.0 - 1.0;
+  p = kaleidoscope(p, 6.0);
 
-  if (k > 0.0) {
-    p = kaleidoscope(p, 6.0);
-  }
-
-  vec4 col = sdfSnowflake(p);
-
-  // hover targets
-  if (
-    min(
-      distance(p, p1),
-      min(
-        distance(p, p2),
-        min(
-          distance(p, p3),
-          min(
-            distance(p, p4),
-            min(
-              distance(p, p5),
-              min(distance(p, p6), min(distance(p, p7), distance(p, p8)))
-            )
-          )
-        )
-      )
-    ) <
-    0.02
-  ) {
-    col = mix(
-      col,
-      vec4(129.0 / 255.0, 52.0 / 255.0, 205.0 / 255.0, 1.0),
-      smoothstep(0.0, 0.2, time)
-    );
-  }
-
-  gl_FragColor = col;
+  gl_FragColor = sdfSnowflake(p);
+  if(gl_FragColor.a == 0.) discard;
 }

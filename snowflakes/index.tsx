@@ -103,6 +103,25 @@ const Shaders = React.memo(function Shader() {
   const mouseDown = useRef<typeof points[number] | null>(null);
   const animate = useRef<number | null>(null);
 
+  console.log([
+    uniforms.p1.value.x,
+    uniforms.p1.value.y,
+    uniforms.p2.value.x,
+    uniforms.p2.value.y,
+    uniforms.p3.value.x,
+    uniforms.p3.value.y,
+    uniforms.p4.value.x,
+    uniforms.p4.value.y,
+    uniforms.p5.value.x,
+    uniforms.p5.value.y,
+    uniforms.p6.value.x,
+    uniforms.p6.value.y,
+    uniforms.p7.value.x,
+    uniforms.p7.value.y,
+    uniforms.p8.value.x,
+    uniforms.p8.value.y,
+  ]);
+
   const onPointerDown = ({ uv }: ThreeEvent<PointerEvent>) => {
     if (!uv) return;
 
