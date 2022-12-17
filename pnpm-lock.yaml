@@ -17,6 +17,7 @@ specifiers:
   glslify-loader: ^2.0.0
   lodash: ^4.17.20
   next: ^12.1.0
+  r3f-perf: ^5.4.2
   raw-loader: ^4.0.2
   react: ^17.0.2
   react-dom: ^17.0.2
@@ -43,6 +44,7 @@ dependencies:
   glslify-loader: 2.0.0
   lodash: 4.17.21
   next: 12.3.4_7l6wjiwmvt4e5yzd2h6zm2ut3u
+  r3f-perf: 5.5.0_3jdkjxxbexo6mp337rsa4hjsqa
   raw-loader: 4.0.2_webpack@5.75.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -1303,6 +1305,14 @@ packages:
       tslib: 2.4.1
     dev: false
 
+  /@radix-ui/react-icons/1.1.1_react@17.0.2:
+    resolution: {integrity: sha512-xc3wQC59rsFylVbSusQCrrM+6695ppF730Q6yqzhRdqDcRNWIm2R6ngpzBoSOQMcwnq4p805F+Gr7xo4fmtN1A==}
+    peerDependencies:
+      react: ^16.x || ^17.x || ^18.x
+    dependencies:
+      react: 17.0.2
+    dev: false
+
   /@react-spring/animated/9.6.0_react@17.0.2:
     resolution: {integrity: sha512-YFBLQ3bnGlUaWA9eVcZ7K1nfgVSF30XPfwqag5hlswYcMi7C5zVriFqN4oxRyDAFHfmNpPfFCRHmgP52L3GF1A==}
     peerDependencies:
@@ -1421,6 +1431,14 @@ packages:
 
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
+    dev: false
+
+  /@stitches/react/1.2.8_react@17.0.2:
+    resolution: {integrity: sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@swc/helpers/0.4.11:
@@ -3478,6 +3496,25 @@ packages:
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+    dev: false
+
+  /r3f-perf/5.5.0_3jdkjxxbexo6mp337rsa4hjsqa:
+    resolution: {integrity: sha512-IJgGDr9bgVE1f6Z3WK53weOIJTWeA4Cz836SycGvXs/MKAjYEj22WTheVx8peNYiiEfUt+pivCf/nKM1rimeKQ==}
+    peerDependencies:
+      '@react-three/fiber': '*'
+      react: '>=17.0'
+      react-dom: '>=17.0'
+      three: '>=0.137'
+    dependencies:
+      '@radix-ui/react-icons': 1.1.1_react@17.0.2
+      '@react-three/drei': 8.20.2_3jdkjxxbexo6mp337rsa4hjsqa
+      '@react-three/fiber': 7.0.29_77pzzjszcj6xzi6cfjxhgtsbue
+      '@stitches/react': 1.2.8_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      three: 0.146.0
+      three-stdlib: 2.20.4_three@0.146.0
+      zustand: 3.7.2_react@17.0.2
     dev: false
 
   /randombytes/2.1.0:

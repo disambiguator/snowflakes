@@ -1,6 +1,6 @@
 #define N (9)
 
-uniform float k, hover, time, totalTime;
+uniform float k, hover, time;
 uniform vec2 p1, p2, p3, p4, p5, p6, p7, p8;
 in vec2 vUv;
 
@@ -14,7 +14,6 @@ float sdPoly(vec2[N] v, vec2 p) {
   float s = 1.0;
   for (int i = 0, j = N - 1; i < N; j = i, i++) {
     vec2 e = v[j] - v[i];
-    // vec2 e = v[j] - v[i] + 0.08 * sin(p.y * 150.0 + totalTime * 3.0);
     // e += 0.01 * sin(p.y * 150.0);
     // e += 0.03 * sin(p.x * 150.0);
     vec2 w = p - v[i];
