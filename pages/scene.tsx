@@ -5,81 +5,7 @@ import * as THREE from "three";
 import vertexShader from "scene.vert";
 import fragmentShader from "scene.frag";
 
-const height = 200;
-
-const rand = (min: number, max: number) => min + Math.random() * (max - min);
-
-const TOP = 1000;
-const MAX = 5000;
-
-const newPosition = () => ({
-  velocity: new THREE.Vector3(0, rand(-60, 0), 0),
-  position: new THREE.Vector3(rand(-5000, 5000), TOP, rand(-5000, 5000)),
-  acceleration: new THREE.Vector3(0, rand(-1, -0.1), 0),
-});
-
-type Particle = {
-  position: THREE.Vector3;
-  velocity: THREE.Vector3;
-  acceleration: THREE.Vector3;
-};
-
-const positionsFromParticles = (particles: Particle[]): Float32Array => {
-  const d = new Float32Array(MAX * 3);
-  particles.forEach((p, i) => {
-    d[i * 3] = p.position.x;
-    d[i * 3 + 1] = p.position.y;
-    d[i * 3 + 2] = p.position.z;
-  });
-
-  return d;
-};
-
-const Rain = () => {
-  const particles: Particle[] = [];
-  for (let i = 0; i < MAX; i++) {
-    const newParticle = newPosition();
-    particles.push(newParticle);
-  }
-  const mat = new THREE.PointsMaterial({ color: 0x0033ff, size: 10 });
-  const positionAttributeRef = useRef<THREE.BufferAttribute>();
-
-  useFrame(() => {
-    particles.forEach((p) => {
-      p.velocity.add(p.acceleration);
-      p.position.add(p.velocity);
-
-      if (p.position.y < -TOP) {
-        const n = newPosition();
-        p.velocity = n.velocity;
-        p.acceleration = n.acceleration;
-        p.position.x = n.position.x;
-        p.position.y = n.position.y;
-        p.position.z = n.position.z;
-      }
-    });
-
-    const positionAttribute = positionAttributeRef.current!;
-    positionAttribute.array = positionsFromParticles(particles);
-    positionAttribute.needsUpdate = true;
-  });
-
-  return (
-    <>
-      <points material={mat} position={[0, 0, -4]}>
-        <bufferGeometry>
-          <bufferAttribute
-            ref={positionAttributeRef}
-            attachObject={["attributes", "position"]}
-            count={MAX}
-            array={positionsFromParticles(particles)}
-            itemSize={3}
-          />
-        </bufferGeometry>
-      </points>
-    </>
-  );
-};
+const TOP = 100;
 
 const uv = new THREE.Vector2();
 const kaleid = (x: number, y: number) => {
@@ -104,11 +30,7 @@ const kaleid = (x: number, y: number) => {
   return [uv.x, uv.y];
 };
 
-const shader = {
-  vertexShader,
-  fragmentShader,
-  uniforms: {},
-};
+const shader = { vertexShader, fragmentShader, uniforms: {} };
 
 type InstancedMesh = Omit<
   THREE.InstancedMesh,
@@ -136,43 +58,61 @@ points.forEach((a) => {
     a[i + 1] = y;
   }
 });
+
+const Snowflake = () => {
+  const ref = useRef<any>(null);
+  const position: [number, number, number] = [
+    100 * Math.random() - 50,
+    50 * Math.random(),
+    100 * Math.random() - 50,
+  ];
+  const speed = Math.random() * 20 + 4;
+  const xSin = Math.random() * 5;
+  const zSin = Math.random() * 5;
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime() * speed;
+    // ref.current.rotation.set(
+    //   Math.cos(t / 4) / 2,
+    //   Math.sin(t / 4) / 2,
+    //   Math.cos(t / 1.5) / 2
+    // );
+    const instance = ref.current!;
+    instance.position.y = TOP - ((position[1] + t) % TOP);
+    instance.position.x = position[0] + Math.sin(t / 10) * xSin;
+    instance.position.z = position[2] + Math.sin(t / 10) * zSin;
+  });
+  return (
+    <Instance
+      ref={ref}
+      scale={Math.random() * 10}
+      position={position}
+      rotation={[
+        Math.PI * 2 * Math.random(),
+        Math.PI * 2 * Math.random(),
+        Math.PI * 2 * Math.random(),
+      ]}
+    />
+  );
+};
+
 const Snow = () => {
   const geomRef = useRef<InstancedMesh>(null);
 
-  const snowflakes = new Array(count).fill(undefined).map((_, i) => {
-    return (
-      <Instance
-        key={i}
-        scale={Math.random() * 10}
-        position={[
-          100 * Math.random() - 50,
-          50 * Math.random(),
-          100 * Math.random() - 50,
-        ]}
-        rotation={[
-          Math.PI * 2 * Math.random(),
-          Math.PI * 2 * Math.random(),
-          Math.PI * 2 * Math.random(),
-        ]}
-      />
-    );
-  });
+  const snowflakes = new Array(count)
+    .fill(undefined)
+    .map((_, i) => <Snowflake key={i} />);
 
   useEffect(() => {
     const geom = geomRef.current!.geometry;
-    for (let i = 0; i < points.length; i++) {
-      geom.setAttribute(
-        `ap${i + 1}`,
-        new THREE.InstancedBufferAttribute(points[i], 2)
-      );
-    }
+    points.forEach((p, i) => {
+      geom.setAttribute(`ap${i + 1}`, new THREE.InstancedBufferAttribute(p, 2));
+    });
   }, []);
 
   return (
     <Instances ref={geomRef} limit={count}>
       <planeGeometry />
       <shaderMaterial args={[shader]} />
-      {/* <meshStandardMaterial /> */}
       {snowflakes}
     </Instances>
   );
@@ -183,10 +123,9 @@ export default function HTTFPage() {
     <div style={{ width: 1000, height: 1000 }}>
       <Canvas
         gl={{ antialias: true }}
-        camera={{ position: [0, 0, 3000], far: 10000 }}
+        camera={{ position: [0, 0, 2000], far: 10000 }}
       >
         <OrbitControls />
-        {/* <Rain /> */}
         <Snow />
       </Canvas>
     </div>
