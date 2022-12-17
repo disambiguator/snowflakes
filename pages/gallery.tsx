@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./gallery.module.scss";
 
-type ImageResponse = { file: string };
+type ImageResponse = { file: string; name: string };
 const Gallery = ({ imageResponses }: { imageResponses: ImageResponse[] }) => {
-  const images = imageResponses.map(({ file }) => (
+  const images = imageResponses.map(({ file, name }) => (
     <div className={styles.galleryItem} key={file}>
       <Image
         src={"https://snowflakes-disambiguous.s3.amazonaws.com/" + file}
@@ -13,7 +13,7 @@ const Gallery = ({ imageResponses }: { imageResponses: ImageResponse[] }) => {
         width={244}
         height={244}
       />
-      <div className={styles.author}>{file}</div>
+      <div className={styles.author}>{name}</div>
     </div>
   ));
 

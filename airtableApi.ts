@@ -1,10 +1,15 @@
 import Airtable, { FieldSet } from "airtable";
 const { AIRTABLE_API_KEY, AIRTABLE_BASE } = process.env;
 
+export interface Model extends FieldSet {
+  name: string;
+  file: string;
+}
+
 const table = "gallery";
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE);
 
-export const airtablePut = async (body: FieldSet) => {
+export const airtablePut = async (body: Model) => {
   const result = await base(table).create(body);
   console.debug("created ", result.getId());
   return result;

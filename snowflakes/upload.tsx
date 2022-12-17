@@ -9,10 +9,10 @@ function dataURItoBlob(dataURI: string) {
   return new Blob([new Uint8Array(array)], { type: "image/png" });
 }
 
-const uploadPhoto = async (uri: string) => {
+const uploadPhoto = async (uri: string, name: string) => {
   const file = dataURItoBlob(uri);
   const filename = uuid() + ".png";
-  const res = await fetch(`/api/upload?file=${filename}`);
+  const res = await fetch(`/api/upload?file=${filename}&name=${name}`);
   const { url, fields } = await res.json();
   const formData = new FormData();
 

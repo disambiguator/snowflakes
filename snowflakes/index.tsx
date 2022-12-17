@@ -84,9 +84,9 @@ const randomize = () => {
 };
 randomize();
 
-const saveSnowflake = () => {
+const saveSnowflake = (name: string) => {
   const href = document.getElementsByTagName("canvas")[0].toDataURL();
-  upload(href);
+  upload(href, name);
   // should this download it?
   // const link = document.createElement('a');
   // link.href = href;
@@ -201,6 +201,34 @@ const Shaders = React.memo(function Shader() {
   );
 });
 
+const Save = () => {
+  const [saveOpen, setSaveOpen] = useState(false);
+  const [name, setName] = useState("");
+  return saveOpen ? (
+    <div className={styles.saveComponent}>
+      What is your name?
+      <input
+        onChange={(e) => setName(e.target.value)}
+        type="text"
+        value={name}
+      />
+      <div
+        className={styles.button}
+        onClick={() => {
+          saveSnowflake(name);
+          setSaveOpen(false);
+        }}
+      >
+        ✔️ submit
+      </div>
+    </div>
+  ) : (
+    <div className={styles.button} onClick={() => setSaveOpen(true)}>
+      💾 save snowflake
+    </div>
+  );
+};
+
 export default function ShaderPage() {
   const [inIntro, setInIntro] = useState(true);
   return (
@@ -233,9 +261,7 @@ export default function ShaderPage() {
           <div className={styles.button} onClick={randomize}>
             🔀 randomize
           </div>
-          <div className={styles.button} onClick={saveSnowflake}>
-            💾 save snowflake
-          </div>
+          <Save />
           <Link href={`/gallery`}>
             <a className={styles.viewGalleryLink}>view gallery ➡️</a>
           </Link>

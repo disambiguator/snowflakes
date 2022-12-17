@@ -1,21 +1,21 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
-import { airtablePut } from "../../airtableApi";
+import { airtablePut, Model } from "../../airtableApi";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const s3Client = new S3Client({
+  region: process.env.REGION,
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
+  },
+});
+
 export default async function handler(
-  req: NextApiRequest & { query: { file: string } },
+  req: NextApiRequest & { query: Model },
   res: NextApiResponse
 ) {
-  airtablePut({ file: req.query.file });
-
-  const s3Client = new S3Client({
-    region: process.env.REGION,
-    credentials: {
-      accessKeyId: process.env.ACCESS_KEY,
-      secretAccessKey: process.env.SECRET_KEY,
-    },
-  });
+  airtablePut({ file: req.query.file, name: req.query.name });
 
   const post = await createPresignedPost(s3Client, {
     Bucket: process.env.BUCKET_NAME!,
