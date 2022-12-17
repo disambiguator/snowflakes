@@ -1,6 +1,6 @@
 #define N (9)
 
-uniform float k, hover, time;
+uniform float time;
 uniform vec2 p1, p2, p3, p4, p5, p6, p7, p8;
 in vec2 vUv;
 
@@ -87,10 +87,7 @@ vec4 sdfSnowflake(vec2 p) {
 void main() {
   // Move from 0 to 1 domain to -1 to 1 domain
   vec2 p = vUv * 2.0 - 1.0;
-
-  if (k > 0.0) {
-    p = kaleidoscope(p, 6.0);
-  }
+  p = kaleidoscope(p, 6.0);
 
   vec4 col = sdfSnowflake(p);
 
@@ -117,7 +114,7 @@ void main() {
     col = mix(
       col,
       vec4(129.0 / 255.0, 52.0 / 255.0, 205.0 / 255.0, 1.0),
-      smoothstep(0.0, 0.2, time)
+        smoothstep(0.0, 1., time)
     );
   }
 

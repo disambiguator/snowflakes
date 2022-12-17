@@ -1,4 +1,10 @@
-import { ThreeEvent, useFrame, useThree, Canvas } from "@react-three/fiber";
+import {
+  ThreeEvent,
+  useFrame,
+  useThree,
+  Canvas,
+  invalidate,
+} from "@react-three/fiber";
 import { minBy } from "lodash";
 import React, { useRef, useState } from "react";
 import { Vector2 } from "three";
@@ -63,8 +69,6 @@ const shader = {
     ...(Object.fromEntries(
       points.map((p) => [p, { value: new Vector2() }])
     ) as Record<typeof points[number], { value: Vector2 }>),
-    k: { value: true },
-    hover: { value: false },
     time: { value: 0 },
   },
 };
@@ -81,6 +85,7 @@ const randomize = () => {
       );
     }
   });
+  invalidate();
 };
 randomize();
 
@@ -98,7 +103,7 @@ const saveSnowflake = (name: string) => {
 
 const Shaders = React.memo(function Shader() {
   const size = useThree((t) => t.size);
-  const clock = useThree((t) => t.clock);
+  const hover = useRef(false);
 
   const mouseDown = useRef<typeof points[number] | null>(null);
   const animate = useRef<number | null>(null);
@@ -143,6 +148,7 @@ const Shaders = React.memo(function Shader() {
       uv.multiplyScalar(2).subScalar(1);
       kaleid(uv);
       uniforms[mouseDown.current].value = uv;
+      invalidate();
     }
   };
 
@@ -151,22 +157,28 @@ const Shaders = React.memo(function Shader() {
   };
 
   const onPointerEnter = () => {
-    uniforms.hover.value = true;
-    animate.current = clock.elapsedTime;
+    hover.current = true;
+    animate.current = performance.now();
+    invalidate();
   };
 
   const onPointerLeave = () => {
-    uniforms.hover.value = false;
-    animate.current = clock.elapsedTime;
+    hover.current = false;
+    animate.current = performance.now();
+    invalidate();
   };
 
+  const totalAnimationTime = 250; // in milliseconds
   useFrame(() => {
     if (animate.current !== null) {
-      uniforms.time.value = uniforms.hover.value
-        ? clock.elapsedTime - animate.current
-        : 0.2 - (clock.elapsedTime - animate.current);
-      if (uniforms.time.value > 1 || uniforms.time.value < 0)
+      const timeDiff =
+        (performance.now() - animate.current) / totalAnimationTime;
+      uniforms.time.value = hover.current ? timeDiff : 1 - timeDiff;
+      if (uniforms.time.value > 1 || uniforms.time.value < 0) {
         animate.current = null;
+      }
+
+      invalidate();
     }
   });
 
@@ -243,7 +255,11 @@ export default function ShaderPage() {
         </div>
       </footer>
       <div className={styles.canvasWrapper}>
-        <Canvas mode="concurrent" gl={{ preserveDrawingBuffer: true }}>
+        <Canvas
+          mode="concurrent"
+          frameloop="demand"
+          gl={{ preserveDrawingBuffer: true }}
+        >
           <Shaders />
           <Perf />
         </Canvas>
