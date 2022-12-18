@@ -26,6 +26,7 @@ specifiers:
   typescript: 4.9.3
   uuid: ^9.0.0
   webpack: ^5.0.0
+  zustand: ^4.1.5
 
 dependencies:
   '@aws-sdk/client-s3': 3.223.0
@@ -53,6 +54,7 @@ dependencies:
   typescript: 4.9.3
   uuid: 9.0.0
   webpack: 5.75.0
+  zustand: 4.1.5_react@17.0.2
 
 packages:
 
@@ -4273,4 +4275,20 @@ packages:
         optional: true
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /zustand/4.1.5_react@17.0.2:
+    resolution: {integrity: sha512-PsdRT8Bvq22Yyh1tvpgdHNE7OAeFKqJXUxtJvj1Ixw2B9O2YZ1M34ImQ+xyZah4wZrR4lENMoDUutKPpyXCQ/Q==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      react: 17.0.2
+      use-sync-external-store: 1.2.0_react@17.0.2
     dev: false

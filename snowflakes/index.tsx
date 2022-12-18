@@ -6,14 +6,15 @@ import {
   invalidate,
 } from "@react-three/fiber";
 import { minBy } from "lodash";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Vector2 } from "three";
 import vertexShader from "./index.vert";
 import fragmentShader from "./index.frag";
 import styles from "./index.module.scss";
 import upload from "./upload";
 import Link from "next/link";
-import { Perf } from "r3f-perf";
+import create, { StoreApi } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
@@ -74,20 +75,16 @@ const shader = {
 };
 const { uniforms } = shader;
 
-const randomize = () => {
+const randPoints = () => {
   const numPoints = 2 + Math.floor(Math.random() * 6);
-  points.forEach((p, i) => {
-    if (i < numPoints) {
-      uniforms[p].value.set(0, 0);
-    } else {
-      kaleid(
-        uniforms[p].value.set(Math.random() * 2 - 1, Math.random() * 2 - 1)
-      );
-    }
-  });
-  invalidate();
+  return new Array(8)
+    .fill(undefined)
+    .map((_, i) =>
+      i < numPoints
+        ? new Vector2()
+        : kaleid(new Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1))
+    );
 };
-randomize();
 
 const saveSnowflake = (name: string) => {
   const href = document.getElementsByTagName("canvas")[0].toDataURL();
@@ -101,31 +98,46 @@ const saveSnowflake = (name: string) => {
   // document.body.removeChild(link);
 };
 
+// return true if changed
+const ease = (v: THREE.Vector2, target: THREE.Vector2) => {
+  if (v.x === target.x && v.y === target.y) {
+    return false;
+  }
+
+  if (v.x - target.x < 0.0001 && v.y - target.y < 0.0001) {
+    v.set(target.x, target.y);
+  } else {
+    v.lerp(target, 0.2);
+  }
+  return true;
+};
+
+type State = {
+  points: Vector2[];
+  set: StoreApi<State>["setState"];
+};
+const useStore = create<State>()(
+  subscribeWithSelector((set) => ({
+    points: randPoints(),
+    set,
+  }))
+);
+
 const Shaders = React.memo(function Shader() {
   const size = useThree((t) => t.size);
   const hover = useRef(false);
 
   const mouseDown = useRef<typeof points[number] | null>(null);
   const animate = useRef<number | null>(null);
+  const pointValues = useRef(useStore.getState().points);
 
-  // console.log([
-  //   uniforms.p1.value.x,
-  //   uniforms.p1.value.y,
-  //   uniforms.p2.value.x,
-  //   uniforms.p2.value.y,
-  //   uniforms.p3.value.x,
-  //   uniforms.p3.value.y,
-  //   uniforms.p4.value.x,
-  //   uniforms.p4.value.y,
-  //   uniforms.p5.value.x,
-  //   uniforms.p5.value.y,
-  //   uniforms.p6.value.x,
-  //   uniforms.p6.value.y,
-  //   uniforms.p7.value.x,
-  //   uniforms.p7.value.y,
-  //   uniforms.p8.value.x,
-  //   uniforms.p8.value.y,
-  // ]);
+  useStore.subscribe(
+    (store) => store.points,
+    (p) => {
+      pointValues.current = p;
+      invalidate();
+    }
+  );
 
   const onPointerDown = ({ uv }: ThreeEvent<PointerEvent>) => {
     if (!uv) return;
@@ -148,6 +160,7 @@ const Shaders = React.memo(function Shader() {
       uv.multiplyScalar(2).subScalar(1);
       kaleid(uv);
       uniforms[mouseDown.current].value = uv;
+      pointValues.current[Number(mouseDown.current.charAt(1)) - 1] = uv;
       invalidate();
     }
   };
@@ -177,9 +190,14 @@ const Shaders = React.memo(function Shader() {
       if (uniforms.time.value > 1 || uniforms.time.value < 0) {
         animate.current = null;
       }
-
       invalidate();
     }
+
+    points.forEach((p, i) => {
+      if (ease(uniforms[p].value, pointValues.current[i])) {
+        invalidate();
+      }
+    });
   });
 
   // const t = useRef(1);
@@ -242,6 +260,10 @@ const Save = () => {
 
 export default function ShaderPage() {
   const [inIntro, setInIntro] = useState(true);
+  const set = useStore((s) => s.set);
+  const randomize = useCallback(() => {
+    set({ points: randPoints() });
+  }, [set]);
   return (
     <React.StrictMode>
       <footer className={styles.marquee}>
@@ -261,7 +283,7 @@ export default function ShaderPage() {
           gl={{ preserveDrawingBuffer: true }}
         >
           <Shaders />
-          <Perf />
+          {/* <Perf /> */}
         </Canvas>
       </div>
       <div className={styles.buttonFrame}>
