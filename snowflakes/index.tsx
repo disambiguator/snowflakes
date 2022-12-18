@@ -77,13 +77,16 @@ const { uniforms } = shader;
 
 const randPoints = () => {
   const numPoints = 2 + Math.floor(Math.random() * 6);
-  return new Array(8)
-    .fill(undefined)
-    .map((_, i) =>
-      i < numPoints
-        ? new Vector2()
-        : kaleid(new Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1))
-    );
+  return new Array(8).fill(undefined).map((_, i) => {
+    if (i < numPoints) return new Vector2();
+
+    const r = Math.sqrt(Math.random());
+    const theta = Math.random() * 2 * Math.PI;
+    const x = r * Math.cos(theta);
+    const y = r * Math.sin(theta);
+    const v = new Vector2(x, y);
+    return kaleid(v);
+  });
 };
 
 const saveSnowflake = (name: string) => {
@@ -159,6 +162,9 @@ const Shaders = React.memo(function Shader() {
     if (mouseDown.current !== null && uv) {
       uv.multiplyScalar(2).subScalar(1);
       kaleid(uv);
+      if (uv.length() > 1) {
+        uv.normalize();
+      }
       uniforms[mouseDown.current].value = uv;
       pointValues.current[Number(mouseDown.current.charAt(1)) - 1] = uv;
       invalidate();
@@ -199,21 +205,6 @@ const Shaders = React.memo(function Shader() {
       }
     });
   });
-
-  // const t = useRef(1);
-  // // animate many snowflakes
-  // useFrame(() => {
-  //   t.current++;
-  //   if (t.current % 20 === 0) {
-  //     t.current = 1;
-  //     kaleid(
-  //       uniforms.p1.value.set(Math.random() * 2 - 1, Math.random() * 2 - 1),
-  //     );
-  //     kaleid(
-  //       uniforms.p2.value.set(Math.random() * 2 - 1, Math.random() * 2 - 1),
-  //     );
-  //   }
-  // });
 
   return (
     <mesh
