@@ -19,8 +19,8 @@ const Gallery = ({ imageResponses }: { imageResponses: ImageResponse[] }) => {
 
   return (
     <div>
-      <Link href={`/`}>
-        <a style={{ float: "right" }}>back to snowflake generator ➡️</a>
+      <Link href={`/`} style={{ float: "right" }}>
+        back to snowflake generator ➡️
       </Link>
       <div className={styles.gallery}>{images}</div>
     </div>

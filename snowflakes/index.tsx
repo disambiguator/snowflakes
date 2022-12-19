@@ -276,11 +276,7 @@ export default function ShaderPage() {
           </div>
           <div className={styles.canvasItem}>
             <div className={styles.canvasWrapper}>
-              <Canvas
-                mode="concurrent"
-                frameloop="demand"
-                gl={{ preserveDrawingBuffer: true }}
-              >
+              <Canvas frameloop="demand" gl={{ preserveDrawingBuffer: true }}>
                 <Shaders />
                 {/* <Perf /> */}
               </Canvas>
@@ -291,8 +287,8 @@ export default function ShaderPage() {
               🔀 randomize
             </div>
             <Save />
-            <Link href={`/gallery`}>
-              <a className={styles.viewGalleryLink}>view gallery ➡️</a>
+            <Link href="/gallery" className={styles.viewGalleryLink}>
+              view gallery ➡️
             </Link>
           </div>
         </div>
