@@ -257,53 +257,57 @@ export default function ShaderPage() {
   }, [set]);
   return (
     <React.StrictMode>
-      <footer className={styles.marquee}>
-        <div className={styles.marqueeText}>
-          ❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy holidays
-          ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from
-          Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras
-          ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️
-          Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella
-          and Paras ❄️
-        </div>
-      </footer>
-      <div className={styles.canvasWrapper}>
-        <Canvas
-          mode="concurrent"
-          frameloop="demand"
-          gl={{ preserveDrawingBuffer: true }}
-        >
-          <Shaders />
-          {/* <Perf /> */}
-        </Canvas>
-      </div>
-      <div className={styles.buttonFrame}>
-        <div
-          className={styles.button}
-          onClick={() => {
-            setInIntro(true);
-          }}
-        >
-          👋 info
-        </div>
-        <div className={styles.topRightButtons}>
-          <div className={styles.button} onClick={randomize}>
-            🔀 randomize
+      <div className={styles.page}>
+        <div className={styles.buttonFrame}>
+          <div
+            className={styles.infoButton}
+            onClick={() => {
+              setInIntro(true);
+            }}
+          >
+            👋 info
           </div>
-          <Save />
-          <Link href={`/gallery`}>
-            <a className={styles.viewGalleryLink}>view gallery ➡️</a>
-          </Link>
+          <div className={styles.canvasItem}>
+            <div className={styles.canvasWrapper}>
+              <Canvas
+                mode="concurrent"
+                frameloop="demand"
+                gl={{ preserveDrawingBuffer: true }}
+              >
+                <Shaders />
+                {/* <Perf /> */}
+              </Canvas>
+            </div>
+          </div>
+          <div className={styles.topRightButtons}>
+            <div className={styles.button} onClick={randomize}>
+              🔀 randomize
+            </div>
+            <Save />
+            <Link href={`/gallery`}>
+              <a className={styles.viewGalleryLink}>view gallery ➡️</a>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      {inIntro ? (
-        <Intro
-          dismiss={() => {
-            setInIntro(false);
-          }}
-        />
-      ) : null}
+        {inIntro ? (
+          <Intro
+            dismiss={() => {
+              setInIntro(false);
+            }}
+          />
+        ) : null}
+        <footer className={styles.marquee}>
+          <div className={styles.marqueeText}>
+            ❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy
+            holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love
+            from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and
+            Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy
+            holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love
+            from Daniella and Paras ❄️
+          </div>
+        </footer>
+      </div>
     </React.StrictMode>
   );
 }

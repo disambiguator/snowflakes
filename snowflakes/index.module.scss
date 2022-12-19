@@ -1,9 +1,5 @@
 .marquee {
-  position: absolute;
-  width: 100%;
   height: 49px;
-  bottom: 0;
-  left: 0;
   background: #40176a;
 }
 .marqueeText {
@@ -56,15 +52,29 @@
   padding: 8px 12px;
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .buttonFrame {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 24px;
+  flex: 1 0 auto;
+}
+
+.infoButton {
+  composes: button;
+  width: 90px;
 }
 
 .topRightButtons {
   display: flex;
+  width: 220px;
   flex-direction: column;
   align-items: flex-end;
 
@@ -77,13 +87,13 @@
   margin-top: 24px;
 }
 
+.canvasItem {
+  flex: 1 1 auto;
+}
+
 .canvasWrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px));
+  width: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px));
+  aspect-ratio: 1;
   margin: auto;
-  height: 90vh;
-  width: 90vh;
 }
