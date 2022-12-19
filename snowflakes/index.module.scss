@@ -37,9 +37,19 @@
   }
 }
 
+.saveInput {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid #8134cd;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
 .saveComponent {
   border: 2px solid #8134cd;
   border-radius: 24px;
+  background: #bdd9e9;
   padding: 8px 12px;
 }
 

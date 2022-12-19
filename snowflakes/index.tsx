@@ -225,23 +225,30 @@ const Save = () => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [name, setName] = useState("");
   return saveOpen ? (
-    <div className={styles.saveComponent}>
-      What is your name?
-      <input
-        onChange={(e) => setName(e.target.value)}
-        type="text"
-        value={name}
-      />
-      <div
-        className={styles.button}
-        onClick={() => {
-          saveSnowflake(name);
-          setSaveOpen(false);
-        }}
-      >
-        ✔️ submit
+    <OutsideAlerter
+      callback={() => {
+        setSaveOpen(false);
+      }}
+    >
+      <div className={styles.saveComponent}>
+        <p>What is your name?</p>
+        <input
+          className={styles.saveInput}
+          onChange={(e) => setName(e.target.value)}
+          type="text"
+          value={name}
+        />
+        <div
+          className={styles.button}
+          onClick={() => {
+            saveSnowflake(name);
+            setSaveOpen(false);
+          }}
+        >
+          ✔️ submit
+        </div>
       </div>
-    </div>
+    </OutsideAlerter>
   ) : (
     <div className={styles.button} onClick={() => setSaveOpen(true)}>
       💾 save snowflake

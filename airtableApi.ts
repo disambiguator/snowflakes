@@ -16,7 +16,9 @@ export const airtablePut = async (body: Model) => {
 };
 
 export const airtableList = async () => {
-  return base(table).select().firstPage();
+  return base(table)
+    .select({ sort: [{ field: "Created", direction: "desc" }] })
+    .firstPage();
 };
 
 // export const airtableDelete = async (table: string, userIds: string[]) => {
