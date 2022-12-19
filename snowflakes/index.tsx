@@ -125,7 +125,7 @@ const useStore = create<State>()(
 );
 
 const Shaders = React.memo(function Shader() {
-  const size = useThree((t) => t.size);
+  const camera = useThree((t) => t.camera as THREE.PerspectiveCamera);
   const hover = useRef(false);
 
   const mouseDown = useRef<typeof points[number] | null>(null);
@@ -204,16 +204,18 @@ const Shaders = React.memo(function Shader() {
     });
   });
 
+  const ang_rad = (camera.fov * Math.PI) / 180;
+  const fov_y = camera.position.z * Math.tan(ang_rad / 2) * 2;
+
   return (
     <mesh
-      position={[0, 0, -610]}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
     >
-      <planeGeometry args={[size.width, size.height]} />
+      <planeGeometry args={[fov_y * camera.aspect, fov_y]} />
       <shaderMaterial args={[shader]} />
     </mesh>
   );
