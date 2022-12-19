@@ -15,29 +15,27 @@ import upload from "./upload";
 import Link from "next/link";
 import create, { StoreApi } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+import OutsideAlerter from "outside_alert";
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
-    <>
-      <div className={styles.introBackground} />
-      <div className={styles.introMessage}>
-        <p className={styles.bold}>snowflake generator</p>
-        <p>
-          select “randomize” to generate a completely random snowflake. hover
-          over the snowflake to select and use the purple vertices to alter the
-          shape and cutouts of your snowflake.
-        </p>
-        <p>
-          select “save snowflake” to create and save an image of your snowflake.
-          this will get saved to the gallery.
-        </p>
-        <p>you can view all snowflakes generated in the gallery.</p>
-        <p>hope you have fun!</p>
-        <div className={styles.button} onClick={dismiss}>
-          ❄️ let it snow
-        </div>
+    <div className={styles.introMessage}>
+      <p className={styles.bold}>snowflake generator</p>
+      <p>
+        select “randomize” to generate a completely random snowflake. hover over
+        the snowflake to select and use the purple vertices to alter the shape
+        and cutouts of your snowflake.
+      </p>
+      <p>
+        select “save snowflake” to create and save an image of your snowflake.
+        this will get saved to the gallery.
+      </p>
+      <p>you can view all snowflakes generated in the gallery.</p>
+      <p>hope you have fun!</p>
+      <div className={styles.button} onClick={dismiss}>
+        ❄️ let it snow
       </div>
-    </>
+    </div>
   );
 };
 
@@ -291,11 +289,17 @@ export default function ShaderPage() {
         </div>
 
         {inIntro ? (
-          <Intro
-            dismiss={() => {
+          <OutsideAlerter
+            callback={() => {
               setInIntro(false);
             }}
-          />
+          >
+            <Intro
+              dismiss={() => {
+                setInIntro(false);
+              }}
+            />
+          </OutsideAlerter>
         ) : null}
         <footer className={styles.marquee}>
           <div className={styles.marqueeText}>
