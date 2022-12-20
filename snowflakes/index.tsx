@@ -257,11 +257,18 @@ const Save = () => {
 };
 
 export default function ShaderPage() {
-  const [inIntro, setInIntro] = useState(true);
+  const [inIntro, setInIntro] = useState(
+    !localStorage.getItem("introDismissed")
+  );
   const set = useStore((s) => s.set);
   const randomize = useCallback(() => {
     set({ points: randPoints() });
   }, [set]);
+
+  function dismissIntro() {
+    localStorage.setItem("introDismissed", "true");
+    return setInIntro(false);
+  }
 
   return (
     <>
@@ -294,16 +301,8 @@ export default function ShaderPage() {
       </div>
 
       {inIntro ? (
-        <OutsideAlerter
-          callback={() => {
-            return setInIntro(false);
-          }}
-        >
-          <Intro
-            dismiss={() => {
-              setInIntro(false);
-            }}
-          />
+        <OutsideAlerter callback={dismissIntro}>
+          <Intro dismiss={dismissIntro} />
         </OutsideAlerter>
       ) : null}
     </>
