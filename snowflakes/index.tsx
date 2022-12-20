@@ -275,6 +275,11 @@ export default function ShaderPage() {
 
   return (
     <>
+      {inIntro ? (
+        <OutsideAlerter callback={dismissIntro}>
+          <Intro dismiss={dismissIntro} />
+        </OutsideAlerter>
+      ) : null}
       <div className={styles.buttonFrame}>
         <div
           className={styles.infoButton}
@@ -308,12 +313,6 @@ export default function ShaderPage() {
           </Link>
         </div>
       </div>
-
-      {inIntro ? (
-        <OutsideAlerter callback={dismissIntro}>
-          <Intro dismiss={dismissIntro} />
-        </OutsideAlerter>
-      ) : null}
     </>
   );
 }
