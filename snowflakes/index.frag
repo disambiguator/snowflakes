@@ -27,7 +27,7 @@ float sdPoly(vec2[N] v, vec2 p) {
 
 const vec2 top = vec2(0.0, 1.0);
 const vec2 center = vec2(0.0, 0.0);
-const float dF = 0.01;
+const float dF = 0.006;
 
 // Modified kaleidoscope function
 vec2 kaleidoscope(vec2 uv, float numSides) {

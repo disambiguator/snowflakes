@@ -73,10 +73,12 @@ const shader = {
 };
 const { uniforms } = shader;
 
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
 const randPoints = () => {
-  const numPoints = 2 + Math.floor(Math.random() * 6);
+  const numPoints = Math.floor(rand(2, 8));
   return new Array(8).fill(undefined).map((_, i) => {
-    if (i < numPoints) return new Vector2();
+    if (i > numPoints) return new Vector2();
 
     const r = Math.sqrt(Math.random());
     const theta = Math.random() * 2 * Math.PI;
@@ -135,6 +137,7 @@ const Shaders = React.memo(function Shader() {
   useStore.subscribe(
     (store) => store.points,
     (p) => {
+      console.log(p);
       pointValues.current = p;
       invalidate();
     }
@@ -283,7 +286,13 @@ export default function ShaderPage() {
         </div>
         <div className={styles.canvasItem}>
           <div className={styles.canvasWrapper}>
-            <Canvas frameloop="demand" gl={{ preserveDrawingBuffer: true }}>
+            <Canvas
+              frameloop="demand"
+              gl={{
+                preserveDrawingBuffer: true,
+                pixelRatio: 2,
+              }}
+            >
               <Shaders />
               {/* <Perf /> */}
             </Canvas>
