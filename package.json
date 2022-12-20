@@ -30,6 +30,7 @@
     "raw-loader": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-responsive": "^9.0.2",
     "sass": "^1.57.0",
     "three": "^0.147.0",
     "three-stdlib": "^2.20.5",

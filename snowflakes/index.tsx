@@ -16,6 +16,7 @@ import Link from "next/link";
 import create, { StoreApi } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import OutsideAlerter from "outside_alert";
+import useIsMobile from "isMobile";
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
@@ -229,6 +230,8 @@ const Shaders = React.memo(function Shader() {
 const Save = () => {
   const [saveOpen, setSaveOpen] = useState(false);
   const [name, setName] = useState("");
+  const isMobile = useIsMobile();
+
   return saveOpen ? (
     <OutsideAlerter
       callback={() => {
@@ -256,7 +259,7 @@ const Save = () => {
     </OutsideAlerter>
   ) : (
     <div className={styles.button} onClick={() => setSaveOpen(true)}>
-      💾 save snowflake
+      💾 save{isMobile ? "" : " snowflake"}
     </div>
   );
 };
@@ -274,6 +277,8 @@ export default function ShaderPage() {
     localStorage.setItem("introDismissed", "true");
     return setInIntro(false);
   }
+
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -295,10 +300,7 @@ export default function ShaderPage() {
           <div className={styles.canvasWrapper}>
             <Canvas
               frameloop="demand"
-              gl={{
-                preserveDrawingBuffer: true,
-                pixelRatio: 2,
-              }}
+              gl={{ preserveDrawingBuffer: true, pixelRatio: 2 }}
             >
               <Shaders />
               {/* <Perf /> */}
@@ -310,10 +312,17 @@ export default function ShaderPage() {
             🔀 randomize
           </div>
           <Save />
+          {!isMobile && (
+            <Link href="/gallery" className={styles.viewGalleryLink}>
+              view gallery ➡️
+            </Link>
+          )}
+        </div>
+        {isMobile && (
           <Link href="/gallery" className={styles.viewGalleryLink}>
             view gallery ➡️
           </Link>
-        </div>
+        )}
       </div>
     </>
   );

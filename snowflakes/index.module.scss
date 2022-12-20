@@ -1,7 +1,6 @@
 .introMessage {
   position: absolute;
-  left: 24px;
-  top: 24px;
+  margin: 24px;
   padding: 32px;
   width: 544px;
   background: #bdd9e9;
@@ -9,10 +8,16 @@
   border-radius: 24px;
   color: #40176a;
   z-index: 1;
+
+  @media screen and (max-width: 768px) {
+    margin: 16px;
+    width: unset;
+  }
 }
 
 .bold {
   font-weight: 700;
+  margin: 0;
 }
 
 .button {
@@ -45,39 +50,74 @@
 .buttonFrame {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   padding: 24px;
   flex: 1 0 auto;
+  height: calc(100vh - 49px - 48px);
+
+  @media screen and (max-width: 768px) {
+    padding: 16px;
+    height: calc(100vh - 49px - 32px);
+  }
 }
 
 .infoButton {
   composes: button;
   width: 90px;
+  order: 1;
+
+  @media screen and (max-width: 768px) {
+    width: unset;
+  }
 }
 
 .topRightButtons {
   display: flex;
   width: 220px;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-end;
+  flex: 0 0 auto;
+  order: 3;
 
   > div {
     margin-bottom: 8px;
+  }
+
+  @media screen and (max-width: 768px) {
+    order: 2;
+    width: unset;
+
+    .button {
+      margin-right: 4px;
+    }
   }
 }
 
 .viewGalleryLink {
   margin-top: 24px;
+  order: 4;
 }
 
 .canvasItem {
   flex: 1 1 auto;
+  order: 2;
+
+  @media screen and (max-width: 768px) {
+    order: 3;
+  }
 }
 
 .canvasWrapper {
-  height: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px));
-  width: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px));
+  height: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px - 48px));
+  width: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px - 48px));
   aspect-ratio: 1;
   margin: auto;
+
+  @media screen and (max-width: 768px) {
+    height: min(calc(100vh - 49px - 48px), calc(100vw - 32px));
+    width: min(calc(100vh - 49px - 48px), calc(100vw - 32px));
+  }
 }
