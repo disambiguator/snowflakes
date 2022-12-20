@@ -10,16 +10,17 @@ const Gallery = ({ imageResponses }: { imageResponses: ImageResponse[] }) => {
       <Image
         src={"https://snowflakes-disambiguous.s3.amazonaws.com/" + file}
         alt={file}
-        width={244}
-        height={244}
+        width={264}
+        height={264}
+        className={styles.image}
       />
       <div className={styles.author}>{name}</div>
     </div>
   ));
 
   return (
-    <div>
-      <Link href={`/`} style={{ float: "right" }}>
+    <div className={styles.frame}>
+      <Link href="/" style={{ marginLeft: "auto" }}>
         back to snowflake generator ➡️
       </Link>
       <div className={styles.gallery}>{images}</div>

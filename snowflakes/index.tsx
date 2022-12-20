@@ -262,61 +262,50 @@ export default function ShaderPage() {
   const randomize = useCallback(() => {
     set({ points: randPoints() });
   }, [set]);
+
   return (
-    <React.StrictMode>
-      <div className={styles.page}>
-        <div className={styles.buttonFrame}>
-          <div
-            className={styles.infoButton}
-            onClick={() => {
-              setInIntro(true);
-            }}
-          >
-            👋 info
-          </div>
-          <div className={styles.canvasItem}>
-            <div className={styles.canvasWrapper}>
-              <Canvas frameloop="demand" gl={{ preserveDrawingBuffer: true }}>
-                <Shaders />
-                {/* <Perf /> */}
-              </Canvas>
-            </div>
-          </div>
-          <div className={styles.topRightButtons}>
-            <div className={styles.button} onClick={randomize}>
-              🔀 randomize
-            </div>
-            <Save />
-            <Link href="/gallery" className={styles.viewGalleryLink}>
-              view gallery ➡️
-            </Link>
+    <>
+      <div className={styles.buttonFrame}>
+        <div
+          className={styles.infoButton}
+          onClick={() => {
+            setInIntro(true);
+          }}
+        >
+          👋 info
+        </div>
+        <div className={styles.canvasItem}>
+          <div className={styles.canvasWrapper}>
+            <Canvas frameloop="demand" gl={{ preserveDrawingBuffer: true }}>
+              <Shaders />
+              {/* <Perf /> */}
+            </Canvas>
           </div>
         </div>
+        <div className={styles.topRightButtons}>
+          <div className={styles.button} onClick={randomize}>
+            🔀 randomize
+          </div>
+          <Save />
+          <Link href="/gallery" className={styles.viewGalleryLink}>
+            view gallery ➡️
+          </Link>
+        </div>
+      </div>
 
-        {inIntro ? (
-          <OutsideAlerter
-            callback={() => {
+      {inIntro ? (
+        <OutsideAlerter
+          callback={() => {
+            return setInIntro(false);
+          }}
+        >
+          <Intro
+            dismiss={() => {
               setInIntro(false);
             }}
-          >
-            <Intro
-              dismiss={() => {
-                setInIntro(false);
-              }}
-            />
-          </OutsideAlerter>
-        ) : null}
-        <footer className={styles.marquee}>
-          <div className={styles.marqueeText}>
-            ❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy
-            holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love
-            from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and
-            Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy
-            holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love
-            from Daniella and Paras ❄️
-          </div>
-        </footer>
-      </div>
-    </React.StrictMode>
+          />
+        </OutsideAlerter>
+      ) : null}
+    </>
   );
 }
