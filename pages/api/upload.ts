@@ -12,18 +12,16 @@ const s3Client = new S3Client({
 });
 
 export default async function handler(
-  req: NextApiRequest & { query: Model },
+  req: NextApiRequest & { body: Model },
   res: NextApiResponse
 ) {
-  airtablePut({ file: req.query.file, name: req.query.name });
+  const body = JSON.parse(req.body);
+  airtablePut(body);
 
   const post = await createPresignedPost(s3Client, {
-    Bucket: process.env.BUCKET_NAME!,
-    Key: req.query.file,
-    Fields: {
-      acl: "public-read",
-      "Content-Type": "image/png",
-    },
+    Bucket: process.env.BUCKET_NAME,
+    Key: body.file,
+    Fields: { acl: "public-read", "Content-Type": "image/png" },
     Expires: 600, // seconds
     Conditions: [
       ["content-length-range", 0, 1048576], // up to 1 MB

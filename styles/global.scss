@@ -11,10 +11,12 @@ body {
   overscroll-behavior: none;
 
   color: #6427a0;
+  height: 100vh;
+}
 
+#__next {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .marquee {

@@ -4,6 +4,7 @@ const { AIRTABLE_API_KEY, AIRTABLE_BASE } = process.env;
 export interface Model extends FieldSet {
   name: string;
   file: string;
+  points: string;
 }
 
 const table = "gallery";

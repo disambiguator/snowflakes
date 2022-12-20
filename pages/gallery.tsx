@@ -1,10 +1,9 @@
-import { airtableList } from "airtableApi";
+import { airtableList, Model } from "airtableApi";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./gallery.module.scss";
 
-type ImageResponse = { file: string; name: string };
-const Gallery = ({ imageResponses }: { imageResponses: ImageResponse[] }) => {
+const Gallery = ({ imageResponses }: { imageResponses: Model[] }) => {
   const images = imageResponses.map(({ file, name }) => (
     <div className={styles.galleryItem} key={file}>
       <Image

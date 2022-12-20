@@ -17,5 +17,6 @@ declare namespace NodeJS {
     SECRET_KEY: string;
     AIRTABLE_API_KEY: string;
     AIRTABLE_BASE: string;
+    BUCKET_NAME: string;
   }
 }

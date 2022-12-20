@@ -4,31 +4,10 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import vertexShader from "scene.vert";
 import fragmentShader from "scene.frag";
+import styles from "./scene.module.scss";
+import { airtableList, Model } from "airtableApi";
 
 const TOP = 100;
-
-const uv = new THREE.Vector2();
-const kaleid = (x: number, y: number) => {
-  uv.x = x;
-  uv.y = y;
-
-  const KA = Math.PI / 6.0;
-  // get the angle in radians of the current coords relative to origin (i.e. center of screen)
-  let angle = Math.atan2(uv.y, uv.x) + 2 * Math.PI;
-  // repeat image over evenly divided rotations around the center
-  angle = angle % (2.0 * KA);
-  // reflect the image within each subdivision to create a tilelable appearance
-  angle = Math.abs(angle - KA);
-  angle += Math.PI / 2.0;
-  // get the distance of the coords from the uv origin (i.e. center of the screen)
-  const d = uv.length();
-  // map the calculated angle to the uv coordinate system at the given distance
-  uv.x = Math.cos(angle);
-  uv.y = Math.sin(angle);
-  uv.multiplyScalar(d);
-
-  return [uv.x, uv.y];
-};
 
 const shader = { vertexShader, fragmentShader, uniforms: {} };
 
@@ -41,23 +20,6 @@ type InstancedMesh = Omit<
 };
 
 const count = 300;
-const points = [
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-  new Float32Array(count * 2),
-];
-points.forEach((a) => {
-  for (let i = 0; i < a.length; i += 2) {
-    const [x, y] = kaleid(Math.random() * 2 - 1, Math.random() * 2 - 1);
-    a[i] = x;
-    a[i + 1] = y;
-  }
-});
 
 const Snowflake = () => {
   const ref = useRef<any>(null);
@@ -69,6 +31,7 @@ const Snowflake = () => {
   const speed = Math.random() * 20 + 4;
   const xSin = Math.random() * 5;
   const zSin = Math.random() * 5;
+
   useFrame((state) => {
     const t = state.clock.getElapsedTime() * speed;
     // ref.current.rotation.set(
@@ -95,7 +58,7 @@ const Snowflake = () => {
   );
 };
 
-const Snow = () => {
+const Snow = ({ fields }: { fields: Model[] }) => {
   const geomRef = useRef<InstancedMesh>(null);
 
   const snowflakes = new Array(count)
@@ -104,10 +67,20 @@ const Snow = () => {
 
   useEffect(() => {
     const geom = geomRef.current!.geometry;
-    points.forEach((p, i) => {
-      geom.setAttribute(`ap${i + 1}`, new THREE.InstancedBufferAttribute(p, 2));
-    });
-  }, []);
+    const p = fields.map((f) => JSON.parse(f.points) as [number, number][]);
+
+    for(let i = 0; i < 8; i++) {
+      const a = new Float32Array(count * 2)
+
+      for (let j = 0; j < a.length; j += 2) {
+        const [x, y] = p[(j / 2) % p.length][i];
+        a[j] = x;
+        a[j + 1] = y;
+      }
+
+      geom.setAttribute(`ap${i + 1}`, new THREE.InstancedBufferAttribute(a, 2));
+    };
+  }, [fields]);
 
   return (
     <Instances ref={geomRef} limit={count}>
@@ -118,15 +91,16 @@ const Snow = () => {
   );
 };
 
-export default function HTTFPage() {
+export const getServerSideProps = async () => ({
+  props: { fields: (await airtableList()).map((r) => r.fields) },
+});
+
+export default function HTTFPage({ fields }: { fields: Model[] }) {
   return (
-    <div style={{ width: 1000, height: 1000 }}>
-      <Canvas
-        gl={{ antialias: true }}
-        camera={{ position: [0, 0, 2000], far: 10000 }}
-      >
+    <div className={styles.scene}>
+      <Canvas camera={{ position: [0, 0, 100], far: 10000 }}>
         <OrbitControls />
-        <Snow />
+        <Snow fields={fields} />
       </Canvas>
     </div>
   );

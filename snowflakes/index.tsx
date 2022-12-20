@@ -90,8 +90,11 @@ const randPoints = () => {
 };
 
 const saveSnowflake = (name: string) => {
+  // Not great that I'm reading straight from uniforms, but w/e
+  const toSave = points.map((p) => uniforms[p].value.toArray());
+
   const href = document.getElementsByTagName("canvas")[0].toDataURL();
-  upload(href, name);
+  upload(href, name, toSave);
   // should this download it?
   // const link = document.createElement('a');
   // link.href = href;
@@ -137,7 +140,6 @@ const Shaders = React.memo(function Shader() {
   useStore.subscribe(
     (store) => store.points,
     (p) => {
-      console.log(p);
       pointValues.current = p;
       invalidate();
     }
