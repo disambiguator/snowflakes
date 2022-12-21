@@ -5,28 +5,54 @@ uniform vec2 p1, p2, p3, p4, p5, p6, p7, p8;
 in vec2 vUv;
 
 const float PI = 3.14159265359;
+const vec2 center = vec2(0.0, 0.0);
+
+// NO idea why i need to do this but vec arrays do not work in Android otherwise.
+  // vec2[N] poly = vec2[N](center, p1, p2, p3, p4, p5, p6, p7, p8);
+vec2 v(int i) {
+  if(i == 0) {
+    return center;
+  } else if(i == 1) {
+    return p1;
+    } else if(i == 2) {
+    return p2;
+    } else if(i == 3) {
+    return p3;
+      } else if(i == 4) {
+    return p4;
+  }  else if(i == 5) {
+    return p5;
+  }   else if(i == 6) {
+    return p6;
+      }   else if(i == 7) {
+    return p7;
+      }   else if(i == 8) {
+    return p8;
+  } else {
+    return vec2(0.);
+  }
+}
 
 // signed distance to a 2D polygon
 // adapted from triangle
 // https://iquilezles.org/articles/distfunctions2d
-float sdPoly(vec2[N] v, vec2 p) {
-  float d = dot(p - v[0], p - v[0]);
+float sdPoly(vec2 p) {
+  float d = dot(p - v(0), p - v(0));
   float s = 1.0;
   for (int i = 0, j = N - 1; i < N; j = i, i++) {
-    vec2 e = v[j] - v[i];
+    vec2 e = v(j) - v(i);
     // e += 0.01 * sin(p.y * 150.0);
     // e += 0.03 * sin(p.x * 150.0);
-    vec2 w = p - v[i];
+    vec2 w = p - v(i);
     vec2 b = w - e * clamp(dot(w, e) / dot(e, e), 0.0, 1.0);
     d = min(d, dot(b, b));
-    bvec3 c = bvec3(p.y >= v[i].y, p.y < v[j].y, e.x * w.y > e.y * w.x);
+    bvec3 c = bvec3(p.y >= v(i).y, p.y < v(j).y, e.x * w.y > e.y * w.x);
     if (all(c) || all(not(c))) s *= -1.0;
   }
   return s * sqrt(d);
 }
 
 const vec2 top = vec2(0.0, 1.0);
-const vec2 center = vec2(0.0, 0.0);
 const float dF = 0.006;
 
 // Modified kaleidoscope function
@@ -56,8 +82,7 @@ const vec4 outlineColor = vec4(
 );
 
 vec4 sdfSnowflake(vec2 p) {
-  vec2[N] poly = vec2[N](center, p1, p2, p3, p4, p5, p6, p7, p8);
-  float d = sdPoly(poly, p);
+  float d = sdPoly(p);
 
   vec4 col = vec4(0.0);
 
