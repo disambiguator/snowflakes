@@ -6,7 +6,7 @@ import {
   invalidate,
 } from "@react-three/fiber";
 import { minBy } from "lodash";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Vector2 } from "three";
 import vertexShader from "./index.vert";
 import fragmentShader from "./index.frag";
@@ -135,6 +135,7 @@ const useStore = create<State>()(
 );
 
 const Shaders = React.memo(function Shader() {
+  const touchSupported = isTouchDevice();
   const camera = useThree((t) => t.camera as THREE.PerspectiveCamera);
   const hover = useRef(false);
 
@@ -150,8 +151,28 @@ const Shaders = React.memo(function Shader() {
     }
   );
 
+  let timer: NodeJS.Timeout | null = null;
+  const timerPointerUp = () => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      hover.current = false;
+      animate.current = performance.now();
+      invalidate();
+      timer = null;
+    }, 1000);
+  };
+
   const onPointerDown = ({ uv }: ThreeEvent<PointerEvent>) => {
     if (!uv) return;
+
+    if (touchSupported) {
+      if (!hover.current) {
+        hover.current = true;
+        animate.current = performance.now();
+      }
+      invalidate();
+      timerPointerUp();
+    }
 
     uv.multiplyScalar(2).subScalar(1);
     kaleid(uv);
@@ -167,6 +188,8 @@ const Shaders = React.memo(function Shader() {
   };
 
   const onPointerMove = ({ uv }: ThreeEvent<PointerEvent>) => {
+    if (touchSupported) timerPointerUp();
+
     if (mouseDown.current !== null && uv) {
       uv.multiplyScalar(2).subScalar(1);
       kaleid(uv);
@@ -220,14 +243,6 @@ const Shaders = React.memo(function Shader() {
 
   const ang_rad = (camera.fov * Math.PI) / 180;
   const fov_y = camera.position.z * Math.tan(ang_rad / 2) * 2;
-
-  const touchSupported = isTouchDevice();
-  useEffect(() => {
-    if (touchSupported) {
-      uniforms.time.value = 1;
-      invalidate();
-    }
-  }, [touchSupported]);
 
   return (
     <mesh
