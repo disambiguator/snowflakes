@@ -6,7 +6,7 @@ import {
   invalidate,
 } from "@react-three/fiber";
 import { minBy } from "lodash";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Vector2 } from "three";
 import vertexShader from "./index.vert";
 import fragmentShader from "./index.frag";
@@ -17,6 +17,10 @@ import create, { StoreApi } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import OutsideAlerter from "outside_alert";
 import useIsMobile from "isMobile";
+
+function isTouchDevice() {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+}
 
 const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
@@ -180,12 +184,16 @@ const Shaders = React.memo(function Shader() {
   };
 
   const onPointerEnter = () => {
+    if (touchSupported) return;
+
     hover.current = true;
     animate.current = performance.now();
     invalidate();
   };
 
   const onPointerLeave = () => {
+    if (touchSupported) return;
+
     hover.current = false;
     animate.current = performance.now();
     invalidate();
@@ -212,6 +220,14 @@ const Shaders = React.memo(function Shader() {
 
   const ang_rad = (camera.fov * Math.PI) / 180;
   const fov_y = camera.position.z * Math.tan(ang_rad / 2) * 2;
+
+  const touchSupported = isTouchDevice();
+  useEffect(() => {
+    if (touchSupported) {
+      uniforms.time.value = 1;
+      invalidate();
+    }
+  }, [touchSupported]);
 
   return (
     <mesh

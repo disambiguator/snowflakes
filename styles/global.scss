@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  height: 100%;
 
   background: #bdd9e9;
 
@@ -11,11 +10,16 @@ body {
   overscroll-behavior: none;
 
   color: #6427a0;
-  height: 100vh;
 
   @media screen and (max-width: 768px) {
     font-size: 16px;
   }
+}
+
+html,
+body,
+#__next {
+  height: 100%;
 }
 
 #__next {
@@ -26,19 +30,17 @@ body {
 .marquee {
   height: 49px;
   background: #40176a;
-}
-.marqueeText {
+  flex: 0 0 auto;
   padding-left: 8px;
   white-space: nowrap;
   overflow: hidden;
-  line-height: 49px;
   color: white;
 
+  line-height: 49px;
   @media screen and (max-width: 768px) {
     font-size: 10px;
     line-height: unset;
     display: flex;
-    height: 100%;
     p {
       margin: 0;
     }

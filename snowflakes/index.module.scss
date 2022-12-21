@@ -1,14 +1,14 @@
 .introMessage {
   position: absolute;
-  margin: 24px;
   padding: 32px;
-  width: 544px;
   background: #bdd9e9;
   border: 2px solid #40176a;
   border-radius: 24px;
   color: #40176a;
   z-index: 1;
 
+  margin: 24px;
+  width: 544px;
   @media screen and (max-width: 768px) {
     margin: 16px;
     width: unset;
@@ -23,7 +23,6 @@
 .button {
   font-weight: 700;
   padding: 8px 12px;
-  width: fit-content;
   border: 2px solid #8134cd;
   border-radius: 24px;
   &:hover {
@@ -36,7 +35,6 @@
   outline: 0;
   background: transparent;
   border-bottom: 1px solid #8134cd;
-  width: 100%;
   margin-bottom: 8px;
 }
 
@@ -53,33 +51,25 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 24px;
-  flex: 1 0 auto;
-  height: calc(100vh - 49px - 48px);
+  flex: 1 1 auto;
 
+  padding: 24px;
   @media screen and (max-width: 768px) {
     padding: 16px;
-    height: calc(100vh - 49px - 32px);
   }
 }
 
 .infoButton {
   composes: button;
-  width: 90px;
   order: 1;
-
-  @media screen and (max-width: 768px) {
-    width: unset;
-  }
 }
 
 .topRightButtons {
   display: flex;
-  width: 220px;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-end;
-  flex: 0 0 auto;
+  flex: 0 0 220px;
   order: 3;
 
   > div {
@@ -88,7 +78,7 @@
 
   @media screen and (max-width: 768px) {
     order: 2;
-    width: unset;
+    flex: 0 0 auto;
 
     .button {
       margin-right: 4px;
@@ -102,7 +92,7 @@
 }
 
 .canvasItem {
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   order: 2;
 
   @media screen and (max-width: 768px) {
@@ -111,13 +101,6 @@
 }
 
 .canvasWrapper {
-  height: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px - 48px));
-  width: min(calc(100vh - 49px - 48px), calc(100vw - 220px - 90px - 48px));
   aspect-ratio: 1;
-  margin: auto;
-
-  @media screen and (max-width: 768px) {
-    height: min(calc(100vh - 49px - 48px), calc(100vw - 32px));
-    width: min(calc(100vh - 49px - 48px), calc(100vw - 32px));
-  }
+  touch-action: none;
 }

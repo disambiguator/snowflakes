@@ -15,16 +15,14 @@ export default function App({ Component, pageProps }: AppProps) {
     <React.StrictMode>
       <Component {...pageProps} />
       <footer className="marquee">
-        <div className="marqueeText">
-          {mobile ? (
-            <>
-              <p>Happy holidays ❄️</p>
-              <p>Love from Daniella and Paras</p>
-            </>
-          ) : (
-            "❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️"
-          )}
-        </div>
+        {mobile ? (
+          <>
+            <p>Happy holidays ❄️</p>
+            <p>Love from Daniella and Paras</p>
+          </>
+        ) : (
+          "❄️ Happy holidays ❄️ Love from Daniella and Paras ️️❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️ Happy holidays ❄️ Love from Daniella and Paras ❄️"
+        )}
       </footer>
     </React.StrictMode>
   );
