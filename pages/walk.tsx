@@ -1,5 +1,6 @@
 import {
   ContactShadows,
+  GradientTexture,
   Instance,
   Instances,
   OrbitControls,
@@ -13,6 +14,8 @@ import vertexShader from "scene.vert";
 import fragmentShader from "scene.frag";
 import styles from "./scene.module.scss";
 import { airtableList, Model } from "airtableApi";
+import Link from "next/link";
+import useIsMobile from "isMobile";
 
 const TOP = 70;
 const FLOOR = -30;
@@ -27,7 +30,7 @@ type InstancedMesh = Omit<
   instanceColor: THREE.InstancedBufferAttribute;
 };
 
-const count = 200;
+const count = 300;
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 const Snowflake = () => {
@@ -59,7 +62,7 @@ const Snowflake = () => {
   return (
     <Instance
       ref={ref}
-      scale={Math.random() * 7}
+      scale={rand(1, 7)}
       position={position}
       rotation={[
         Math.PI * 2 * Math.random(),
@@ -108,7 +111,10 @@ export const getServerSideProps = async () => ({
 });
 
 export default function HTTFPage({ fields }: { fields: Model[] }) {
+  const isMobile = useIsMobile();
+
   return (
+    <>
     <div className={styles.scene}>
       <Canvas camera={{ position: [0, 0, 10], far: 1000 }}>
         <OrbitControls enablePan={false} maxDistance={100} />
@@ -118,8 +124,8 @@ export default function HTTFPage({ fields }: { fields: Model[] }) {
           position={[0, FLOOR, 0]}
           scale={160}
           far={(TOP - FLOOR) / 2}
-          blur={2}
-          color={"black"}
+            blur={3}
+            color="gray"
           rotation={[-Math.PI / 2, 0, 0]}
         />
         <Plane
@@ -129,11 +135,20 @@ export default function HTTFPage({ fields }: { fields: Model[] }) {
         >
           <meshBasicMaterial color="white" />
         </Plane>
-        {/* <fog attach="fog" color="lightblue" near={10} far={100} /> */}
         <Sphere args={[160]}>
-          <meshBasicMaterial color="lightblue" side={THREE.BackSide} />
+            <meshBasicMaterial side={THREE.BackSide}>
+              <GradientTexture
+                stops={[0.4, 1]} // As many stops as you want
+                colors={["#bdd9e9", "hotpink"]} // Colors need to match the number of stops
+              />
+            </meshBasicMaterial>
         </Sphere>
       </Canvas>
     </div>
+      <div className={styles.links}>
+        <Link href="/">back{isMobile ? "" : " to snowflake generator"} ⬅️</Link>
+        <Link href="/gallery">back to gallery ⬅️</Link>
+      </div>
+    </>
   );
 }

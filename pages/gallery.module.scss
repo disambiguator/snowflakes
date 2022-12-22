@@ -1,8 +1,16 @@
 .frame {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   padding: 24px;
+  overflow: auto;
+  flex: 1 1 auto;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .galleryItem {

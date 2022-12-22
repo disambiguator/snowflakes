@@ -318,6 +318,17 @@ export default function ShaderPage() {
 
   const isMobile = useIsMobile();
 
+  const buttons = (
+    <>
+      <Link href="/gallery" className={styles.viewGalleryLink}>
+        view gallery ➡️
+      </Link>
+      <Link href="/walk" className={styles.viewGalleryLink}>
+        take a walk 🚶‍♀️
+      </Link>
+    </>
+  );
+
   return (
     <>
       {inIntro ? (
@@ -350,17 +361,9 @@ export default function ShaderPage() {
             🔀 randomize
           </div>
           <Save />
-          {!isMobile && (
-            <Link href="/gallery" className={styles.viewGalleryLink}>
-              view gallery ➡️
-            </Link>
-          )}
+          {!isMobile && buttons}
         </div>
-        {isMobile && (
-          <Link href="/gallery" className={styles.viewGalleryLink}>
-            view gallery ➡️
-          </Link>
-        )}
+        {isMobile && buttons}
       </div>
     </>
   );

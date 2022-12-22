@@ -98,6 +98,8 @@
 .canvasItem {
   flex: 1 0 auto;
   order: 2;
+  max-height: 80vh;
+  max-width: 80vh;
 
   @media screen and (max-width: 768px) {
     order: 3;

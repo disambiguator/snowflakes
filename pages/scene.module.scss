@@ -1,3 +1,11 @@
 .scene {
   flex: 1 1 auto;
 }
+
+.links {
+  position: absolute;
+  margin: 24px;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 48px);
+}
