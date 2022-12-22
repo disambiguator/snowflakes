@@ -41,8 +41,6 @@ float sdPoly(vec2 p) {
   float s = 1.0;
   for (int i = 0, j = N - 1; i < N; j = i, i++) {
     vec2 e = v(j) - v(i);
-    // e += 0.01 * sin(p.y * 150.0);
-    // e += 0.03 * sin(p.x * 150.0);
     vec2 w = p - v(i);
     vec2 b = w - e * clamp(dot(w, e) / dot(e, e), 0.0, 1.0);
     d = min(d, dot(b, b));
@@ -52,7 +50,6 @@ float sdPoly(vec2 p) {
   return s * sqrt(d);
 }
 
-const vec2 top = vec2(0.0, 1.0);
 const float dF = 0.006;
 
 // Modified kaleidoscope function
