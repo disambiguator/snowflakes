@@ -26,16 +26,21 @@ const Intro = ({ dismiss }: { dismiss: () => void }) => {
   return (
     <div className={styles.introMessage}>
       <p className={styles.bold}>snowflake generator</p>
+      <p>select “randomize” to generate a completely random snowflake.</p>
       <p>
-        select “randomize” to generate a completely random snowflake. hover over
-        the snowflake to select and use the purple vertices to alter the shape
-        and cutouts of your snowflake.
+        hover over the snowflake and click/tap + drag the purple dots to alter
+        the shape and cutouts of your snowflake. each branch of the snowflake
+        has 8 vertices, mirrored, and there might be multiple in the center of
+        the flake.
       </p>
       <p>
         select “save snowflake” to create and save an image of your snowflake.
-        this will get saved to the gallery.
+        this will save your snowflake to the gallery.
       </p>
-      <p>you can view all snowflakes generated in the gallery.</p>
+      <p>
+        you can view all snowflakes generated in the gallery, or you can take a
+        walk - try it!
+      </p>
       <p>hope you have fun!</p>
       <div className={styles.button} onClick={dismiss}>
         ❄️ let it snow
