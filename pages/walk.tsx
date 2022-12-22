@@ -115,38 +115,37 @@ export default function HTTFPage({ fields }: { fields: Model[] }) {
 
   return (
     <>
-    <div className={styles.scene}>
-      <Canvas camera={{ position: [0, 0, 10], far: 1000 }}>
-        <OrbitControls enablePan={false} maxDistance={100} />
-        {/* <Stars /> */}
-        <Snow fields={fields} />
-        <ContactShadows
-          position={[0, FLOOR, 0]}
-          scale={160}
-          far={(TOP - FLOOR) / 2}
+      <div className={styles.scene}>
+        <Canvas camera={{ position: [0, 0, 10], far: 1000 }}>
+          <OrbitControls enablePan={false} maxDistance={100} />
+          {/* <Stars /> */}
+          <Snow fields={fields} />
+          <ContactShadows
+            position={[0, FLOOR, 0]}
+            scale={160}
+            far={(TOP - FLOOR) / 2}
             blur={3}
             color="gray"
-          rotation={[-Math.PI / 2, 0, 0]}
-        />
-        <Plane
-          args={[1000, 1000]}
-          position={[0, FLOOR - 0.1, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <meshBasicMaterial color="white" />
-        </Plane>
-        <Sphere args={[160]}>
+            rotation={[-Math.PI / 2, 0, 0]}
+          />
+          <Plane
+            args={[1000, 1000]}
+            position={[0, FLOOR - 0.1, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <meshBasicMaterial color="white" />
+          </Plane>
+          <Sphere args={[160]}>
             <meshBasicMaterial side={THREE.BackSide}>
               <GradientTexture
                 stops={[0.4, 1]} // As many stops as you want
                 colors={["#bdd9e9", "hotpink"]} // Colors need to match the number of stops
               />
             </meshBasicMaterial>
-        </Sphere>
-      </Canvas>
-    </div>
+          </Sphere>
+        </Canvas>
+      </div>
       <div className={styles.links}>
-        <Link href="/">back{isMobile ? "" : " to snowflake generator"} ⬅️</Link>
         <Link href="/gallery">back to gallery ⬅️</Link>
       </div>
     </>
