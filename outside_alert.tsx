@@ -36,20 +36,17 @@ export default function OutsideAlerter(props: {
   useOutsideAlerter(wrapperRef, props.callback);
 
   return (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          left: 0,
-          top: 0,
-          background: "rgba(255, 255, 255, 0.5)",
-        }}
-      />
-      <div style={{ position: "relative" }} ref={wrapperRef}>
-        {props.children}
-      </div>
-    </>
+    <div
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        left: 0,
+        top: 0,
+        background: "rgba(255, 255, 255, 0.5)",
+      }}
+    >
+      <div ref={wrapperRef}>{props.children}</div>
+    </div>
   );
 }
