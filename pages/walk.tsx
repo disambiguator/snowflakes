@@ -205,7 +205,9 @@ export default function HTTFPage({ fields }: { fields: Model[] }) {
         <Scene fields={fields} setName={setNameVisibility} />
       </div>
       <div className={styles.links}>
-        <Link href="/gallery">back to gallery ⬅️</Link>
+        <Link style={{ marginBottom: "8px" }} href="/gallery">
+          back to gallery ⬅️
+        </Link>
         <span className={visible ? styles.nameVisible : styles.nameHidden}>
           snowflake made by: {name}
         </span>
