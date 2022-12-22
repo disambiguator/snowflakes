@@ -23,8 +23,10 @@
 .button {
   font-weight: 700;
   padding: 8px 12px;
-  border: 2px solid #8134cd;
+  color: #6427a0;
+  border: 2px solid #40176a;
   border-radius: 24px;
+  width: fit-content;
   &:hover {
     cursor: pointer;
   }
