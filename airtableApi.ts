@@ -17,7 +17,7 @@ export const airtablePut = async (body: Model) => {
 };
 
 export const airtableList = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Records<FieldSet>>((resolve, reject) => {
     let allRecords: Records<FieldSet> = [];
     base(table)
       .select({
