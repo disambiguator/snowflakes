@@ -1,4 +1,4 @@
-import Airtable, { FieldSet } from "airtable";
+import Airtable, { FieldSet, Records } from "airtable";
 const { AIRTABLE_API_KEY, AIRTABLE_BASE } = process.env;
 
 export interface Model extends FieldSet {
@@ -16,10 +16,29 @@ export const airtablePut = async (body: Model) => {
   return result;
 };
 
-export const airtableList = async () => {
-  return base(table)
-    .select({ sort: [{ field: "Created", direction: "desc" }] })
-    .firstPage();
+export const airtableList = () => {
+  return new Promise((resolve, reject) => {
+    let allRecords: Records<FieldSet> = [];
+    base(table)
+      .select({
+        maxRecords: 300,
+        sort: [{ field: "Created", direction: "desc" }],
+      })
+      .eachPage(
+        function page(records, fetchNextPage) {
+          allRecords = allRecords.concat(records);
+          fetchNextPage();
+        },
+        function done(err) {
+          // console.log(allRecords);
+          resolve(allRecords);
+          if (err) {
+            console.error(err);
+            reject(err);
+          }
+        }
+      );
+  });
 };
 
 // export const airtableDelete = async (table: string, userIds: string[]) => {
