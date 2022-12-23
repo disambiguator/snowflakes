@@ -222,6 +222,7 @@ const Shaders = React.memo(function Shader() {
   const onPointerLeave = () => {
     if (touchSupported) return;
 
+    mouseDown.current = null; // In case someone moves mouse out while mouse is down
     hover.current = false;
     animate.current = performance.now();
     invalidate();
