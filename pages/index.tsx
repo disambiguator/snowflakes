@@ -13,10 +13,11 @@ import fragmentShader from "index.frag";
 import styles from "./index.module.scss";
 import upload from "upload";
 import Link from "next/link";
-import create, { StoreApi } from "zustand";
+import { create, StoreApi } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import OutsideAlerter from "outside_alert";
 import useIsMobile from "isMobile";
+import * as THREE from "three";
 
 function isTouchDevice() {
   return "ontouchstart" in window || navigator.maxTouchPoints > 0;
@@ -77,7 +78,7 @@ const shader = {
   uniforms: {
     ...(Object.fromEntries(
       points.map((p) => [p, { value: new Vector2() }])
-    ) as Record<typeof points[number], { value: Vector2 }>),
+    ) as Record<(typeof points)[number], { value: Vector2 }>),
     time: { value: 0 },
   },
 };
@@ -144,7 +145,7 @@ const Shaders = React.memo(function Shader() {
   const camera = useThree((t) => t.camera as THREE.PerspectiveCamera);
   const hover = useRef(false);
 
-  const mouseDown = useRef<typeof points[number] | null>(null);
+  const mouseDown = useRef<(typeof points)[number] | null>(null);
   const animate = useRef<number | null>(null);
   const pointValues = useRef(useStore.getState().points);
 
@@ -350,7 +351,8 @@ export default function ShaderPage() {
           <div className={styles.canvasWrapper}>
             <Canvas
               frameloop="demand"
-              gl={{ preserveDrawingBuffer: true, pixelRatio: 2 }}
+              gl={{ preserveDrawingBuffer: true }}
+              dpr={2}
             >
               <Shaders />
               {/* <Perf /> */}
