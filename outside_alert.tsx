@@ -28,10 +28,9 @@ function useOutsideAlerter(
 /**
  * Component that alerts if you click outside of it
  */
-export default function OutsideAlerter(props: {
-  children: React.ReactElement;
-  callback: () => void;
-}) {
+export default function OutsideAlerter(
+  props: React.PropsWithChildren<{ callback: () => void }>
+) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   useOutsideAlerter(wrapperRef, props.callback);
 
